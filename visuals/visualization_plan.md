@@ -94,10 +94,53 @@ blender --python animate_proof.py -- /tmp/delay_proof.json
 - `higher_myelination_reduces_delay`: Network-level effect
 
 **Benefits:**
-- **Step-by-step visualization**: See how proofs unfold tactically
-- **Mathematical intuition**: Animations can reveal the "why" behind theorems
+- **Step-by-step proof visualization**: See how proofs unfold tactically
+- **Mathematical intuition**: Animations reveal the "why" behind theorems
 - **Educational value**: Perfect for understanding myelin-gain control mechanisms
 - **Formal verification**: Ensures animations reflect actual proven mathematics
+
+**Current Status:**
+- ✅ Basic theorems (e.g., `gain_control.test`) animate successfully
+- ❌ Complex theorems use unsupported tactics (`ring`, `linarith`, `norm_num`)
+- 🔄 Alternative: Python-based conceptual animations
+
+### Python Animation for Complex Relationships
+For theorems that can't be animated with Blender, create matplotlib animations of the mathematical relationships:
+
+**Delay-Velocity Relationship Animation:**
+```python
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import numpy as np
+
+# Data from Lean data generation functions
+c_values = np.linspace(0.1, 100, 100)
+delays = 1.0 / c_values  # l/c relationship
+
+fig, ax = plt.subplots()
+line, = ax.plot([], [], 'b-', linewidth=2)
+ax.set_xlim(0.1, 100)
+ax.set_ylim(0, 10)
+ax.set_xlabel('Conduction Velocity (m/s)')
+ax.set_ylabel('Axonal Delay (ms)')
+
+def animate(frame):
+    line.set_data(c_values[:frame], delays[:frame])
+    return line,
+
+anim = animation.FuncAnimation(fig, animate, frames=len(c_values), interval=50)
+anim.save('delay_velocity_animation.gif', writer='pillow')
+```
+
+**Gain Function Evolution:**
+- Animate the sigmoid function with different β parameters
+- Show how higher β creates sharper transitions (relevant to gain control)
+- Illustrate the membrane potential → firing rate mapping
+
+**Network Effects Animation:**
+- Show how increasing velocity shifts the firing rate distribution
+- Animate the transition from low to high myelination states
+- Visualize the amplification effect on stimulus response
 
 ### Visualization Types
 - **Mathematical Functions**: Plots of delay curves, gain functions, distributions
